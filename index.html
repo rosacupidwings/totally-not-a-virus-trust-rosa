@@ -16,9 +16,6 @@
         }
         .popup {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             width: 320px;
             background: #ece9d8;
             border: 2px solid #000;
@@ -54,20 +51,10 @@
     </style>
 </head>
 <body>
-    <audio id="bgMusic" autoplay loop>
+    <audio id="bgMusic" loop>
         <source src="idk.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-
-    <div id="popup" class="popup">
-        <div class="popup-header">System Message - Error</div>
-        <div class="popup-content">
-            <p id="lyric">I need an explanation<br>tell me more >:C</p>
-        </div>
-        <div class="popup-buttons">
-            <button id="idkButton" onclick="showNextLyric()">oki :&gt;</button>
-        </div>
-    </div>
 
     <script>
         const lyrics = [
@@ -81,28 +68,51 @@
         let index = 0;
 
         function showNextLyric() {
-            if (index < lyrics.length) {
-                document.getElementById('lyric').innerText = lyrics[index].text;
-                document.getElementById('idkButton').innerText = lyrics[index].button;
-                index++;
-            } else {
+            const audio = document.getElementById('bgMusic');
+            if (audio.paused) {
+                audio.play();
+            }
+
+            const popup = document.createElement('div');
+            popup.className = 'popup';
+
+            const header = document.createElement('div');
+            header.className = 'popup-header';
+            header.innerText = 'System Message - Error';
+
+            const content = document.createElement('div');
+            content.className = 'popup-content';
+            content.innerHTML = index < lyrics.length ? lyrics[index].text : "I need an explanation<br>tell me more >:C";
+
+            const buttons = document.createElement('div');
+            buttons.className = 'popup-buttons';
+
+            const button = document.createElement('button');
+            button.innerText = index < lyrics.length ? lyrics[index].button : "oki :>";
+            button.onclick = showNextLyric;
+
+            buttons.appendChild(button);
+            popup.appendChild(header);
+            popup.appendChild(content);
+            popup.appendChild(buttons);
+
+            document.body.appendChild(popup);
+
+            // Random Positioning
+            popup.style.top = Math.floor(Math.random() * (window.innerHeight - 200)) + 'px';
+            popup.style.left = Math.floor(Math.random() * (window.innerWidth - 300)) + 'px';
+
+            index++;
+            if (index > lyrics.length) {
                 index = 0;
-                document.getElementById('lyric').innerHTML = "I need an explanation<br>tell me more >:C";
-                document.getElementById('idkButton').innerText = "oki :>";
             }
         }
 
-        // Try to autoplay music by muting and playing immediately (browsers often block autoplay)
-        document.addEventListener('DOMContentLoaded', () => {
-            const audio = document.getElementById('bgMusic');
-            audio.muted = true;
-            audio.play().then(() => {
-                audio.muted = false;
-                audio.play();
-            }).catch(() => {
-                console.log('Autoplay blocked by browser');
-            });
-        });
+        // Create the first pop-up on page load
+        window.onload = () => {
+            showNextLyric();
+        }
     </script>
 </body>
 </html>
+
