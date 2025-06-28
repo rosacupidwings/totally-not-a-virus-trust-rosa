@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>totally-not-a-virus-trust-rose</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('Untitleddesign-ezgif.com-crop.gif') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'MS Sans Serif', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            background: #ece9d8;
+            border: 2px solid #000;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+            padding: 0;
+        }
+        .popup-header {
+            background: #000080;
+            color: white;
+            padding: 4px 8px;
+            font-size: 14px;
+            text-align: left;
+        }
+        .popup-content {
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .popup-buttons {
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #000;
+        }
+        .popup button {
+            padding: 4px 12px;
+            margin: 0 5px;
+            border: 2px solid #000;
+            background: #c0c0c0;
+            cursor: pointer;
+            font-family: 'MS Sans Serif', sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <audio id="bgMusic" autoplay loop>
+        <source src="idk.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="popup" class="popup">
+        <div class="popup-header">System Message - Error</div>
+        <div class="popup-content">
+            <p id="lyric">I need an explanation<br>tell me more >:C</p>
+        </div>
+        <div class="popup-buttons">
+            <button id="idkButton" onclick="showNextLyric()">oki :&gt;</button>
+        </div>
+    </div>
+
+    <script>
+        const lyrics = [
+            { text: "Why I'm in love now?", button: "idk" },
+            { text: "How can I live forever?", button: "idk" },
+            { text: "Where can I find the heaven?", button: "idk" },
+            { text: "What is going to happen?", button: "idk" },
+            { text: "Why I'm in love now?", button: "idk :<" }
+        ];
+
+        let index = 0;
+
+        function showNextLyric() {
+            if (index < lyrics.length) {
+                document.getElementById('lyric').innerText = lyrics[index].text;
+                document.getElementById('idkButton').innerText = lyrics[index].button;
+                index++;
+            } else {
+                index = 0;
+                document.getElementById('lyric').innerHTML = "I need an explanation<br>tell me more >:C";
+                document.getElementById('idkButton').innerText = "oki :>";
+            }
+        }
+
+        // Try to autoplay music by muting and playing immediately (browsers often block autoplay)
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.getElementById('bgMusic');
+            audio.muted = true;
+            audio.play().then(() => {
+                audio.muted = false;
+                audio.play();
+            }).catch(() => {
+                console.log('Autoplay blocked by browser');
+            });
+        });
+    </script>
+</body>
+</html>
